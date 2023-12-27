@@ -8,16 +8,22 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = "us-east-1"
     }
-    
-    if(params.Action == 'Destroy EKS cluster'){
+ script{
+   if(params.Action == 'Destroy EKS cluster'){
         stages{
             stage('Terraform init'){
                 steps{
-                    sh "terraform init"
+                    script{
+                        sh "terraform init"
+                    }
                 }
             }
             stage('Destroy'){
-                sh 'terraform destroy --auto-aprove'
+                steps{
+                    script{
+                        sh 'terraform destroy --auto-aprove'
+                    }
+                }
             }
         }
     }
@@ -26,13 +32,18 @@ pipeline {
         stages {
             stage('Terraform init'){
                     steps{
-                        sh "terraform init"
+                        script
+                        {
+                            sh "terraform init"
+                        }
                     }
                 }
             stage('Plan'){
                     steps{
+                        script{
                             sh 'terraform plan -out tfplan'
                             sh 'terraform show -no-color tfplan > tfplan.txt'
+                        }
                         }
                 }
 
@@ -56,5 +67,7 @@ pipeline {
             }
         }
     }
+ }   
+ 
 
 }
