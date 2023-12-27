@@ -26,7 +26,7 @@ pipeline {
                 steps{
                     script{
                         if (params.Action == 'Create EKS cluster'){
-                            sh 'terraform apply -input=false tfplan --auto-approve'
+                            sh 'terraform apply -input=false tfplan'
                         }
                         else if(params.Action == 'Destroy EKS cluster'){
                             sh 'terraform destroy --auto-aprove'
